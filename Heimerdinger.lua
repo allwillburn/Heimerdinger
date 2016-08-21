@@ -1,4 +1,4 @@
-local ver = "0.01"
+local ver = "0.02"
 
 if FileExist(COMMON_PATH.."MixLib.lua") then
  require('MixLib')
@@ -91,7 +91,11 @@ OnTick(function (myHero)
             
             if HeimerdingerMenu.Harass.W:Value() and ValidTarget(target, 1100) then
 				CastTargetSpell(target, _W)
-                       end     
+                                end
+
+            if HeimerdingerMenu.Harass.W:Value() and ValidTarget(target, 1100) then
+				CastSkillShot(_E, target.pos)
+                                end     
             end
 
 	--COMBO
