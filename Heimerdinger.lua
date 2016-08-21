@@ -15,13 +15,13 @@ function AutoUpdate(data)
     if tonumber(data) > tonumber(ver) then
         PrintChat('<font color = "#00FFFF">New version found! ' .. data)
         PrintChat('<font color = "#00FFFF">Downloading update, please wait...')
-        DownloadFileAsync('https://raw.githubusercontent.com/allwillburn/Jax/master/Jax.lua', SCRIPT_PATH .. 'Jax.lua', function() PrintChat('<font color = "#00FFFF">Update Complete, please 2x F6!') return end)
+        DownloadFileAsync('https://raw.githubusercontent.com/allwillburn/Heimerdinger/master/Heimerdinger.lua', SCRIPT_PATH .. 'Heimerdinger.lua', function() PrintChat('<font color = "#00FFFF">Update Complete, please 2x F6!') return end)
     else
         PrintChat('<font color = "#00FFFF">No updates found!')
     end
 end
 
-GetWebResultAsync("https://raw.githubusercontent.com/allwillburn/Jax/master/Jax.version", AutoUpdate)
+GetWebResultAsync("https://raw.githubusercontent.com/allwillburn/Heimerdinger/master/Heimerdinger.version", AutoUpdate)
 
 
 GetLevelPoints = function(unit) return GetLevel(unit) - (GetCastLevel(unit,0)+GetCastLevel(unit,1)+GetCastLevel(unit,2)+GetCastLevel(unit,3)) end
@@ -38,7 +38,7 @@ HeimerdingerMenu.Combo:Boolean("R", "Use R in combo", true)
 HeimerdingerMenu.Combo:Boolean("Gunblade", "Use Gunblade", true)
 
 HeimerdingerMenu:SubMenu("AutoMode", "AutoMode")
-HeimerdingerMenu.AutoMode:Boolean("Level", "Auto level spells", true)
+HeimerdingerMenu.AutoMode:Boolean("Level", "Auto level spells", false)
 HeimerdingerMenu.AutoMode:Boolean("Ghost", "Auto Ghost", false)
 HeimerdingerMenu.AutoMode:Boolean("Q", "Auto Q", false)
 HeimerdingerMenu.AutoMode:Boolean("W", "Auto W", false)
