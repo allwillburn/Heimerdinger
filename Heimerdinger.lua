@@ -72,9 +72,6 @@ HeimerdingerMenu.SkinChanger:Slider("SelectedSkin", "Select A Skin:", 1, 0, 5, 1
 
 OnTick(function (myHero)
 	local target = GetCurrentTarget()
-        local YGB = GetItemSlot(myHero, 3142)
-	local RHydra = GetItemSlot(myHero, 3074)
-	local Tiamat = GetItemSlot(myHero, 3077)
         local Gunblade = GetItemSlot(myHero, 3146)
 
 	--AUTO LEVEL UP
