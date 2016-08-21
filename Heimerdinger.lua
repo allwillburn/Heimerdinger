@@ -1,4 +1,4 @@
-local ver = "0.03"
+local ver = "0.04"
 
 if FileExist(COMMON_PATH.."MixLib.lua") then
  require('MixLib')
@@ -36,6 +36,9 @@ HeimerdingerMenu.Combo:Boolean("W", "Use W in combo", true)
 HeimerdingerMenu.Combo:Boolean("E", "Use E in combo", true)
 HeimerdingerMenu.Combo:Boolean("R", "Use R in combo", true)
 HeimerdingerMenu.Combo:Boolean("Gunblade", "Use Gunblade", true)
+HeimerdingerMenu.Combo:Boolean("GLP800", "Use GLP800", true) 
+HeimerdingerMenu.Combo:Boolean("Protobelt", "Use Protobelt", true) 
+
 
 HeimerdingerMenu:SubMenu("AutoMode", "AutoMode")
 HeimerdingerMenu.AutoMode:Boolean("Level", "Auto level spells", false)
@@ -77,6 +80,8 @@ HeimerdingerMenu.SkinChanger:Slider("SelectedSkin", "Select A Skin:", 1, 0, 5, 1
 OnTick(function (myHero)
 	local target = GetCurrentTarget()
         local Gunblade = GetItemSlot(myHero, 3146)
+        local GLP800 = GetItemSlot(myHero, 3030)
+        local Protobelt = GetItemSlot(myHero, 3152)
 
 	--AUTO LEVEL UP
 	if HeimerdingerMenu.AutoMode.Level:Value() then
@@ -106,6 +111,12 @@ OnTick(function (myHero)
 		if Mix:Mode() == "Combo" then
             if HeimerdingerMenu.Combo.Gunblade:Value() and Gunblade > 0 and Ready(Gunblade) and ValidTarget(target, 700) then
 			      CastTargetSpell(target, Gunblade)
+                              end
+            if HeimerdingerMenu.Combo.GLP800:Value() and GLP800 > 0 and Ready(GLP800) and ValidTarget(target, 700) then
+			      CastTargetSpell(target, GLP800)
+                              end
+            if HeimerdingerMenu.Combo.Protobelt:Value() and Protobelt > 0 and Ready(Protobelt) and ValidTarget(target, 700) then
+			      CastTargetSpell(target, Protobelt)
                               end
             if HeimerdingerMenu.Combo.Q:Value() and Ready(_Q) and ValidTarget(target, 450) then 
                                CastSkillShot(_Q, target.pos)                                    
