@@ -1,4 +1,4 @@
-local ver = "0.02"
+local ver = "0.03"
 
 if FileExist(COMMON_PATH.."MixLib.lua") then
  require('MixLib')
@@ -65,6 +65,10 @@ HeimerdingerMenu.AutoIgnite:Boolean("Ignite", "Ignite if killable", true)
 
 HeimerdingerMenu:SubMenu("Drawings", "Drawings")
 HeimerdingerMenu.Drawings:Boolean("DQ", "Draw Q Range", true)
+HeimerdingerMenu.Drawings:Boolean("DW", "Draw W Range", true)
+HeimerdingerMenu.Drawings:Boolean("DE", "Draw E Range", true)
+
+
 
 HeimerdingerMenu:SubMenu("SkinChanger", "SkinChanger")
 HeimerdingerMenu.SkinChanger:Boolean("Skin", "UseSkinChanger", true)
@@ -147,11 +151,13 @@ OnTick(function (myHero)
                 
                 if IsReady(_Q) and ValidTarget(enemy, 450) and HeimerdingerMenu.KillSteal.Q:Value() and GetHP(enemy) < getdmg("Q",enemy) then 
                                       CastSkillShot(_Q, target.pos)	         
-                end 
-
-                if IsReady(_E) and ValidTarget(enemy, 925) and HeimerdingerMenu.KillSteal.E:Value() and GetHP(enemy) < getdmg("E",enemy) then
-		                     CastSkillShot(_E, target.pos)
-  
+                                      end 
+                if IsReady(_W) and ValidTarget(enemy, 1100) and HeimerdingerMenu.KillSteal.W:Value() and GetHP(enemy) < getdmg("W",enemy) then 
+                                      CastTargetSpell(target, _W)
+                                      end
+                if IsReady(_E) and ValidTarget(enemy, 925) and HeimerdingerMenu.KillSteal.E:Value() and GetHP(enemy) < getdmg("E",enemy) then 
+                                      CastSkillShot(_E, target.pos)
+                
                 end
       end
 
@@ -207,7 +213,7 @@ OnDraw(function (myHero)
 		DrawCircle(GetOrigin(myHero), 700, 0, 200, GoS.Red)
 	 end
 
-         if HeimerdingerMenu.Drawings.DQ:Value() then
+         if HeimerdingerMenu.Drawings.DW:Value() then
 		DrawCircle(GetOrigin(myHero), 1100, 0, 200, GoS.Yellow)
          end
          if HeimerdingerMenu.Drawings.DE:Value() then
