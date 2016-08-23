@@ -75,7 +75,7 @@ HeimerdingerMenu.Drawings:Boolean("DE", "Draw E Range", true)
 
 HeimerdingerMenu:SubMenu("SkinChanger", "SkinChanger")
 HeimerdingerMenu.SkinChanger:Boolean("Skin", "UseSkinChanger", true)
-HeimerdingerMenu.SkinChanger:Slider("SelectedSkin", "Select A Skin:", 1, 0, 5, 1, function(SetDCP) HeroSkinChanger(myHero, SetDCP)  end, true)
+HeimerdingerMenu.SkinChanger:Slider("SelectedSkin", "Select A Skin:", 1, 0, 6, 1, function(SetDCP) HeroSkinChanger(myHero, SetDCP)  end, true)
 
 OnTick(function (myHero)
 	local target = GetCurrentTarget()
@@ -130,11 +130,14 @@ OnTick(function (myHero)
 				CastSkillShot(_E, target.pos)
 	                        end 
 	    
-            if HeimerdingerMenu.Combo.R:Value() and Ready(_R) and ValidTarget(target, 700) then
-				CastSpell(_R)
-                        end
-
+            if HeimerdingerMenu.Combo.R:Value() and Ready(_R) and ValidTarget(target, 1100) then CastSpell(_R) 
+				
+                               if target.distance > 600 then CastTargetSpell(target, _W) elseif target.distance < 600 then CastSkillShot(_Q, target.pos) 
+                               end
+                    end
             end
+                    
+            
 
          --AUTO IGNITE
 	for _, enemy in pairs(GetEnemyHeroes()) do
