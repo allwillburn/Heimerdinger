@@ -1,4 +1,4 @@
-local ver = "0.05"
+local ver = "0.06"
 
 if FileExist(COMMON_PATH.."MixLib.lua") then
  require('MixLib')
@@ -26,6 +26,9 @@ GetWebResultAsync("https://raw.githubusercontent.com/allwillburn/Heimerdinger/ma
 
 GetLevelPoints = function(unit) return GetLevel(unit) - (GetCastLevel(unit,0)+GetCastLevel(unit,1)+GetCastLevel(unit,2)+GetCastLevel(unit,3)) end
 local SetDCP, SkinChanger = 0
+local HeimerdingerW = {delay = .5, range = 1100, width = 200, speed = 902}
+local HeimerdingerE = {delay = .5, range = 1000, width = 925, speed = 2500}
+
 
 local HeimerdingerMenu = Menu("Heimerdinger", "Heimerdinger")
 
@@ -33,11 +36,13 @@ HeimerdingerMenu:SubMenu("Combo", "Combo")
 
 HeimerdingerMenu.Combo:Boolean("Q", "Use Q in combo", true)
 HeimerdingerMenu.Combo:Boolean("W", "Use W in combo", true)
+HeimerdingerMenu.Combo:Slider("Wpred", "W Hit Chance", 3,0,10,1)
 HeimerdingerMenu.Combo:Boolean("E", "Use E in combo", true)
+HeimerdingerMenu.Combo:Slider("Epred", "E Hit Chance", 3,0,10,1)
 HeimerdingerMenu.Combo:Boolean("R", "Use R in combo", true)
 HeimerdingerMenu.Combo:Boolean("Gunblade", "Use Gunblade", true)
-HeimerdingerMenu.Combo:Boolean("GLP800", "Use GLP800", true) 
-HeimerdingerMenu.Combo:Boolean("Protobelt", "Use Protobelt", true) 
+HeimerdingerMenu.Combo:Boolean("GLP800", "Use GLP800", false) 
+HeimerdingerMenu.Combo:Boolean("Protobelt", "Use Protobelt", false) 
 
 
 HeimerdingerMenu:SubMenu("AutoMode", "AutoMode")
@@ -56,6 +61,7 @@ HeimerdingerMenu.LaneClear:Boolean("E", "Use E", true)
 HeimerdingerMenu:SubMenu("Harass", "Harass")
 HeimerdingerMenu.Harass:Boolean("Q", "Use Q", true)
 HeimerdingerMenu.Harass:Boolean("W", "Use W", true)
+HeimerdingerMenu.Harass:Slider("Wpred", "W Hit Chance", 3,0,10,1)
 HeimerdingerMenu.Harass:Boolean("E", "Use E", true)
 
 HeimerdingerMenu:SubMenu("KillSteal", "KillSteal")
@@ -82,6 +88,9 @@ OnTick(function (myHero)
         local Gunblade = GetItemSlot(myHero, 3146)
         local GLP800 = GetItemSlot(myHero, 3030)
         local Protobelt = GetItemSlot(myHero, 3152)
+        local HeimerdingerW = {delay = .5, range = 1100, width = 200, speed = 902}
+        local HeimerdingerE = {delay = .5, range = 1000, width = 925, speed = 2500}
+
 
 	--AUTO LEVEL UP
 	if HeimerdingerMenu.AutoMode.Level:Value() then
@@ -99,8 +108,11 @@ OnTick(function (myHero)
                                 end
             
             if HeimerdingerMenu.Harass.W:Value() and ValidTarget(target, 1100) then
-				CastTargetSpell(target, _W)
-                                end
+		   local WPred = GetPrediction(target,HeimerdingerW)
+                       if WPred.hitChance > (HeimerdingerMenu.Harass.Wpred:Value() * 0.1) and not WPred:mCollision(1) then
+                                 CastSkillShot(_W,WPred.castPos)
+                       end		
+            end		
 
             if HeimerdingerMenu.Harass.W:Value() and ValidTarget(target, 1100) then
 				CastSkillShot(_E, target.pos)
@@ -116,23 +128,30 @@ OnTick(function (myHero)
 			      CastTargetSpell(target, GLP800)
                               end
             if HeimerdingerMenu.Combo.Protobelt:Value() and Protobelt > 0 and Ready(Protobelt) and ValidTarget(target, 700) then
-			      CastTargetSpell(target, Protobelt)
+			      CastSkillShot(target, Protobelt)
                               end
+
             if HeimerdingerMenu.Combo.Q:Value() and Ready(_Q) and ValidTarget(target, 450) then 
                                CastSkillShot(_Q, target.pos)                                    
                                end
 
-            if HeimerdingerMenu.Combo.W:Value() and Ready(_W) and ValidTarget(target, 1100) then
-				CastTargetSpell(target, _W)
-	                        end
-
 	    if HeimerdingerMenu.Combo.E:Value() and Ready(_E) and ValidTarget(target, 925) then
-				CastSkillShot(_E, target.pos)
-	                        end 
+		local EPred = GetPrediction(target,HeimerdingerE)
+                       if EPred.hitChance > (HeimerdingerMenu.Combo.Wpred:Value() * 0.1) then
+                                 CastSkillShot(_E,EPred.castPos)
+                       end		
+            end	
+
+            if HeimerdingerMenu.Combo.W:Value() and Ready(_W) and ValidTarget(target, 1100) then
+		local WPred = GetPrediction(target,HeimerdingerW)
+                       if WPred.hitChance > (HeimerdingerMenu.Combo.Wpred:Value() * 0.1) and not WPred:mCollision(1) then
+                                 CastSkillShot(_W,WPred.castPos)
+                       end		
+            end			
 	    
-            if HeimerdingerMenu.Combo.R:Value() and Ready(_R) and ValidTarget(target, 1100) then CastSpell(_R) 
+            if HeimerdingerMenu.Combo.R:Value() and Ready(_R) and ValidTarget(target, 700) then CastSpell(_R) 
 				
-                               if target.distance > 600 then CastTargetSpell(target, _W) elseif target.distance < 600 then CastSkillShot(_Q, target.pos) 
+                               if target.distance > 600 then CastTargetSpell(target, _W) elseif target.distance < 600 then CastTargetSpell(target, _Q) 
                                end
                     end
             end
@@ -177,7 +196,7 @@ OnTick(function (myHero)
 
       if Mix:Mode() == "LaneClear" then
       	  for _,closeminion in pairs(minionManager.objects) do
-	        if HeimerdingerMenu.LaneClear.Q:Value() and Ready(_Q) and ValidTarget(closeminion, 4500) then
+	        if HeimerdingerMenu.LaneClear.Q:Value() and Ready(_Q) and ValidTarget(closeminion, 450) then
 	        	CastSkillShot(_Q, closeminion)
                 end
                 if HeimerdingerMenu.LaneClear.E:Value() and Ready(_E) and ValidTarget(closeminion, 925) then
