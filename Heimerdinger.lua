@@ -114,7 +114,7 @@ OnTick(function (myHero)
                        end		
             end		
 
-            if HeimerdingerMenu.Harass.W:Value() and ValidTarget(target, 1100) then
+            if HeimerdingerMenu.Harass.E:Value() and ValidTarget(target, 1100) then
 				CastSkillShot(_E, target.pos)
                                 end     
             end
@@ -125,7 +125,7 @@ OnTick(function (myHero)
 			      CastTargetSpell(target, Gunblade)
                               end
             if HeimerdingerMenu.Combo.GLP800:Value() and GLP800 > 0 and Ready(GLP800) and ValidTarget(target, 700) then
-			      CastTargetSpell(target, GLP800)
+			      CastSkillShot(target, GLP800)
                               end
             if HeimerdingerMenu.Combo.Protobelt:Value() and Protobelt > 0 and Ready(Protobelt) and ValidTarget(target, 700) then
 			      CastSkillShot(target, Protobelt)
