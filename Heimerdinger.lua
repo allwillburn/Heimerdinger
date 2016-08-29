@@ -10,6 +10,7 @@ end
 if GetObjectName(GetMyHero()) ~= "Heimerdinger" then return end
 
 require("DamageLib")
+require("OpenPredict")
 
 function AutoUpdate(data)
     if tonumber(data) > tonumber(ver) then
