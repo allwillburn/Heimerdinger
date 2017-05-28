@@ -1,4 +1,4 @@
-local ver = "0.08"
+local ver = "0.09"
 
 if FileExist(COMMON_PATH.."MixLib.lua") then
  require('MixLib')
@@ -90,7 +90,7 @@ OnTick(function (myHero)
         local GLP800 = GetItemSlot(myHero, 3030)
         local Protobelt = GetItemSlot(myHero, 3152)
         local HeimerdingerW = {delay = .5, range = 1100, width = 200, speed = 902}
-        local HeimerdingerE = {delay = .5, range = 1000, width = 925, speed = 2500}
+        local HeimerdingerE = {delay = .5, range = 970, width = 250, speed = 1200}
 
 
 	--AUTO LEVEL UP
@@ -136,14 +136,14 @@ OnTick(function (myHero)
                                CastSkillShot(_Q, target.pos)                                    
                                end
 
-	    if HeimerdingerMenu.Combo.E:Value() and Ready(_E) and ValidTarget(target, 925) then
+	    if HeimerdingerMenu.Combo.E:Value() and Ready(_E) and ValidTarget(target, 970) then
 		local EPred = GetPrediction(target,HeimerdingerE)
                        if EPred.hitChance > (HeimerdingerMenu.Combo.Wpred:Value() * 0.1) then
                                  CastSkillShot(_E,EPred.castPos)
                        end		
             end	
 
-            if HeimerdingerMenu.Combo.W:Value() and Ready(_W) and ValidTarget(target, 1100) then
+            if HeimerdingerMenu.Combo.W:Value() and Ready(_W) and ValidTarget(target, 1325) then
 		local WPred = GetPrediction(target,HeimerdingerW)
                        if WPred.hitChance > (HeimerdingerMenu.Combo.Wpred:Value() * 0.1) and not WPred:mCollision(1) then
                                  CastSkillShot(_W,WPred.castPos)
